@@ -5,7 +5,6 @@ import numpy as np
 from omegaconf import OmegaConf
 from einops import rearrange
 
-from torch import autocast
 from contextlib import nullcontext
 from math import sqrt
 from adapt import ScoreAdapter
@@ -101,7 +100,7 @@ class StableDiffusion(ScoreAdapter):
         self.prompt = prompt
         self.scale = scale
         self.precision = precision
-        self.precision_scope = autocast if self.precision == "autocast" else nullcontext
+        self.precision_scope = autocast if self.precision == True else nullcontext
         self._data_shape = (4, H // ae_resolution_f, W // ae_resolution_f)
 
         self.cond_func = self.model.get_learned_conditioning
@@ -227,7 +226,7 @@ class StableDiffusion(ScoreAdapter):
 
 
 def test():
-    sd = StableDiffusion("v2", True, "haha", 10.0, "autocast")
+    sd = StableDiffusion("v2", True, "haha", 10.0, True)
     print(sd)
 
 
